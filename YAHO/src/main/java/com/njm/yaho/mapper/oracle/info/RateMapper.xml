@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.njm.yaho.mapper.oracle.info.RateMapper">
+	<insert id="insertRate" parameterType="com.njm.yaho.domain.oracle.info.RatingDTO">
+	  INSERT INTO TBL_SCORE (
+      SCORE_ID,
+      ANIME_ID,
+      SCORE_CONTENT,
+      SCORE_SCORE,
+      USER_ID
+    ) VALUES (
+      SC_ID_SEQ.NEXTVAL,
+      #{ANIME_ID},
+      #{SCORE_CONTENT, jdbcType=VARCHAR},
+      #{SCORE_SCORE},
+      #{USER_ID}
+    )
+	</insert>
+	
+	 <select id="selectRateListByAnime" resultType="com.njm.yaho.domain.oracle.info.RatingDTO">
+    SELECT * FROM TBL_SCORE
+    WHERE ANIME_ID = #{ANIME_ID} order by SCORE_ID desc
+  </select>
+
+  <select id="getAverageScore" resultType="double">
+    SELECT ROUND(AVG(SCORE_SCORE), 1)
+    FROM TBL_SCORE
+    WHERE ANIME_ID = #{ANIME_ID}
+  </select>
+	
+	<select id="selectRateCount" parameterType="java.util.HashMap" resultType="com.njm.yaho.domain.oracle.info.RatingDTO">
+		SELECT SCORE_SCORE, COUNT(*) AS COUNT
+		FROM TBL_SCORE
+		WHERE ANIME_ID = #{ANIME_ID} 
+		GROUP BY SCORE_SCORE
+		ORDER BY SCORE_SCORE
+	</select>
+</mapper>

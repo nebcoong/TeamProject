@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.njm.yaho.mapper.oracle.schedule.UserGender">
+	<select id="countGender" resultType="com.njm.yaho.domain.oracle.user.UserDTO">
+		SELECT 
+    		A.USER_GENDER,
+   			A.USER_ID,
+    		(A.USER_GENDER) AS GENDERCOUNT
+		FROM  
+    		TBL_USER A
+		INNER JOIN 
+    		TBL_SCORE B
+		ON 
+    		A.USER_ID = B.USER_ID
+		GROUP BY 
+    		A.USER_GENDER, A.USER_ID
+	</select>
+
+</mapper>

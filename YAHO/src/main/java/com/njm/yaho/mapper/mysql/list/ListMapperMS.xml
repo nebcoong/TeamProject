@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.njm.yaho.mapper.mysql.list.ListMapperMS">
+<!-- 전체 목록 -->
+<select id="selectAllAnime" resultType="com.njm.yaho.domain.mysql.list.animeListMSDTO">
+    select * from TBL_ANIME order by TITLE
+</select>
+<!-- 검색 -->
+<select id="searchAnime" resultType="com.njm.yaho.domain.mysql.list.animeListMSDTO">
+  SELECT * FROM TBL_ANIME
+  WHERE title LIKE CONCAT('%', #{keyword}, '%')
+     OR tags LIKE CONCAT('%', #{keyword}, '%')
+</select>
+
+</mapper>

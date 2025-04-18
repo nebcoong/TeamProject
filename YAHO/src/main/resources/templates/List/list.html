@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<link rel="stylesheet" href="/CSS/test.css">
+<link rel="stylesheet" href="/CSS/style.css">
+<script src="https://kit.fontawesome.com/071aa8f784.js"
+	crossorigin="anonymous"></script>
+
+</head>
+<body>
+	<div class="nav">
+        <img src="/IMG/logo_test1.png" alt="" onclick="location.href='/Schedule/animeSchedule'">
+        <div class="navitem" onclick="location.href='/Main'">홈</div>
+        <div class="navitem" onclick="location.href='/List/List_list'">전체 애니</div>
+        <div class="navitem" onclick="location.href='/Schedule/animeSchedule'">방영중 애니</div>
+        <div class="navitem">자유게시판</div>
+        <div class="navitem" onclick="location.href='/Admin/insert'">관리자</div>
+    </div>
+	<br>
+	<br>
+
+	<!-- Services Start -->
+	<div class="main-layout">
+		<!-- ✅ 사이드바 -->
+		<aside class="sidebar">
+			<form class="search-box" action="post" method="get" id="search-form">
+				<input class="search-txt" type="text" name="keyword" id="search-input" placeholder="검색어를 입력하세요">
+				<button class="search-btn" type="submit">
+					<i class="fa-duotone fa-solid fa-magnifying-glass"></i>
+					<!-- 돋보기 아이콘 -->
+				</button>
+			</form>
+
+			<!-- Tags Start -->
+			<div class="tag-section">
+				<div class="tag-header">
+					<h3 class="tag-title">Tags</h3>
+				</div>
+				<div class="tag-list">
+					<a href="@{/List/List_list(tag='판타지')}" class="tag-btn">판타지</a> 
+					<a href="@{/List/List_list(tag='일상')}" class="tag-btn">일상</a>
+					<a href="@{/List/List_list(tag='스포츠')}" class="tag-btn">스포츠</a> 
+					<a href="@{/List/List_list(tag='게임')}" class="tag-btn">게임</a>
+					<a href="@{/List/List_list(tag='여행')}" class="tag-btn">여행</a> 
+					<a href="@{/List/List_list(tag='공포')}" class="tag-btn">공포</a>
+					<a href="@{/List/List_list(tag='모험')}" class="tag-btn">모험</a> 
+					<a href="@{/List/List_list(tag='SF')}" class="tag-btn">SF</a>
+					<a href="@{/List/List_list(tag='힐링')}" class="tag-btn">힐링</a> 
+					<a href="@{/List/List_list(tag='음악')}" class="tag-btn">음악</a>
+					<a href="@{/List/List_list(tag='학원')}" class="tag-btn">학원</a> 
+					<a href="@{/List/List_list(tag='방과후')}" class="tag-btn">방과후</a>
+				</div>
+				<div class="tag-header">
+					<h3 class="tag-title">분기별</h3>
+				</div>
+				<div class="tag-list">
+					<a href="@{/List/List_list(tag='2025년1분기')}" class="tag-btn">2025년 1분기</a>
+					<a href="@{/List/List_list(tag='2024년4분기')}" class="tag-btn">2024년 4분기</a>
+					<a href="@{/List/List_list(tag='2024년3분기')}" class="tag-btn">2024년 3분기</a>
+					<a href="@{/List/List_list(tag='2024년2분기')}" class="tag-btn">2024년 2분기</a>
+				</div>
+			</div>
+			<!-- Tags End -->
+
+		</aside>
+		<!-- 사이드바 end -->
+
+		<!-- 오른쪽 콘텐츠 영역 시작-->
+		<div class="content-area">
+			<!-- sort start -->
+			<div class="sort-bar">
+				<div class="sort-dropdown">
+					<button class="sort-toggle">
+						<span class="current-sort">인기순</span> <span class="arrow">▴</span>
+					</button>
+					<ul class="sort-menu">
+						<li class="selected" data-sort="popular">인기순</li>
+						<li data-sort="asc">오름차순(A~ㅎ)</li>
+						<li data-sort="desc">내림차순(ㅎ~A)</li>
+						<li data-sort="new">신작순</li>
+						<li data-sort="update">업데이트순</li>
+						<li data-sort="review">리뷰 많은순</li>
+						<li data-sort="rating">별점 높은순</li>
+					</ul>
+				</div>
+			</div>
+			<!-- sort end -->
+
+			<!-- ✅ 카드 목록 start -->
+			<div class="card-container">
+			<div class="anime-card" data-wow-delay="0.1s" th:each="anime : ${list}">
+				<div class="anime-thumbnail-wrapper">
+					<img th:src="@{${anime.THUMNAIL_SERO_URL}}" th:alt="${anime.TITLE}" />
+					<!-- 오버레이 -->
+					<div class="anime-overlay d-flex flex-column">
+						<!-- 확대 버튼 -->
+						<a class="anime-zoom-btn" th:href="@{${anime.THUMNAIL_GARO_URL}}" data-lightbox="portfolio">
+							<i class="fa-solid fa-plus"></i></a>
+						<div class="mt-auto">
+							<h5 th:text="${anime.TITLE}"></h5>
+							<p>
+								평점: <span th:text="${anime.SCORE}"></span>
+								태그: <span th:text="${anime.TAGS}"></span>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+			<!-- 카드 목록 End -->
+		</div>
+		<!-- 오른쪽 콘텐츠 영역 끝 -->
+	</div>
+	<!-- Services End -->
+</body>
+<script>
+  const dropdown = document.querySelector('.sort-dropdown');
+  const toggleBtn = dropdown.querySelector('.sort-toggle');
+  const sortMenu = dropdown.querySelector('.sort-menu');
+  const sortItems = sortMenu.querySelectorAll('li');
+  const currentSortText = dropdown.querySelector('.current-sort');
+
+  // 드롭다운 열기/닫기
+  toggleBtn.addEventListener('click', () => {
+    dropdown.classList.toggle('open');
+  });
+
+  // 항목 클릭 시
+  sortItems.forEach(item => {
+    item.addEventListener('click', () => {
+      // 기존 선택 해제
+      sortItems.forEach(i => i.classList.remove('selected'));
+      item.classList.add('selected');
+
+      // 텍스트 표시 변경
+      currentSortText.textContent = item.textContent;
+
+      // 드롭다운 닫기
+      dropdown.classList.remove('open');
+
+      // 정렬 기준 값 추출
+      const sortValue = item.getAttribute('data-sort');
+      console.log("선택된 정렬 기준:", sortValue);
+
+      // 정렬 함수 호출 (원하는 로직으로 연결)
+      sortContent(sortValue);
+    });
+  });
+
+  // 외부 클릭 시 닫기
+  document.addEventListener('click', (e) => {
+    if (!dropdown.contains(e.target)) {
+      dropdown.classList.remove('open');
+    }
+  });
+
+  // 예시: 콘텐츠 정렬 함수 (내용은 개발자가 정의)
+  function sortContent(sortType) {
+    // 예시용 출력
+    console.log("정렬할 로직을 여기에 추가하세요. 현재 타입:", sortType);
+    // 예: AJAX 호출 or DOM 정렬 등...
+  }
+</script>
+
+</html>
